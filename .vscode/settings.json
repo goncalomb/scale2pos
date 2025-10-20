@@ -1,0 +1,13 @@
+{
+    "python.analysis.typeCheckingMode": "basic",
+    "python.analysis.diagnosticSeverityOverrides": {
+        "reportMissingModuleSource": "none"
+    },
+    "python.analysis.typeshedPaths": [
+        ".mpy/stubs"
+    ],
+    "python.analysis.extraPaths": [
+        ".mpy/stubs",
+        ".mpy/mip-sources"
+    ]
+}
