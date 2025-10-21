@@ -27,3 +27,7 @@ def led_state(*, on=False, flash=0):
     if _led_task:
         _led_task.cancel()
     _led_task = asyncio.create_task(_led_create_task(on, flash))
+
+
+def led_force(on=True):
+    _led.value(1 if on else 0)

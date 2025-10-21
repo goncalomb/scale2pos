@@ -1,6 +1,7 @@
-import usb.device
 import asyncio
 import time
+
+import usb.device
 from usb.device.keyboard import KeyboardInterface, KeyCode
 
 
@@ -49,7 +50,16 @@ class KeyboardInterfaceEx(KeyboardInterface):
                 await asyncio.sleep_ms(delay)
 
 
+_kb = None
+
+
+def keyboard_get():
+    global _kb
+    if not _kb:
+        _kb = KeyboardInterfaceEx()
+        usb.device.get().init(_kb, builtin_driver=True)
+    return _kb
+
+
 def keyboard_setup():
-    kb = KeyboardInterfaceEx()
-    usb.device.get().init(kb, builtin_driver=True)
-    return kb
+    keyboard_get()
