@@ -2,11 +2,13 @@
 
 # MicroPython environment control utility.
 # Author: Gonçalo MB <me@goncalomb.com>
-# Version: 0.1
+# Version: 0.2
 
 set -euo pipefail
+shopt -s extglob
 cd -- "$(dirname -- "$0")"
 
+[ ! -f "mpy-ctrl.conf" ] && echo "missing 'mpy-ctrl.conf'" && exit 1
 . mpy-ctrl.conf
 
 setup_check() {
@@ -66,7 +68,6 @@ cmd_setup() {
     [ -d "micropython-lib" ] || git clone -c advice.detachedHead=false --depth 1 --branch "v$MICROPYTHON_VERSION" https://github.com/micropython/micropython-lib.git
 
     mkdir -p mip-sources
-    cd mip-sources
 
     # download mip package sources
     for PKG in "${MIP_PACKAGES[@]}"; do
@@ -79,9 +80,23 @@ cmd_setup() {
         HASHES=($(echo "$VERSION_JSON" | jq -r '.hashes[][1]'))
         for I in "${!NAMES[@]}"; do
             HASH=${HASHES[$I]}
-            curl -#RL --create-dirs -o "${NAMES[$I]}" "$MIP_INDEX/file/${HASH:0:2}/$HASH"
+            FILE=mip-sources/${NAMES[$I]}
+            curl -#RL --create-dirs -o "$FILE" "$MIP_INDEX/file/${HASH:0:2}/$HASH"
         done
     done
+
+    # setup extra libs
+    if command -v mpy_lib_setup >/dev/null; then
+        echo "setting up extra libs..."
+        mkdir -p lib lib-tmp
+        (
+            mpy_lib_git_clone() {
+                DEST="lib-tmp/$1"
+                [ -d "$DEST" ] || git clone -c advice.detachedHead=false --depth 1 --branch "$3" "$2" "$DEST"
+            }
+            mpy_lib_setup # call user function
+        )
+    fi
 }
 
 cmd_reset() {
@@ -105,12 +120,18 @@ cmd_push() {
 
     if mpremote ls lib >/dev/null 2>&1; then
         echo "skipping installing mip packages"
-    else
+    elif [ "${#MIP_PACKAGES[@]}" -ne 0 ]; then
         echo "installing mip packages..."
         mpremote mip --index "$MIP_INDEX" install ${MIP_PACKAGES[@]}
     fi
 
     echo "copying files..."
+    # copy extra libs (.mpy/lib)
+    if [ -d ".mpy/lib" ]; then
+        mpremote ls lib >/dev/null 2>&1 || mpremote mkdir lib # mkdir lib
+        mpremote fs --recursive cp .mpy/lib/* :/lib/
+    fi
+    # copy src
     mpremote fs --recursive cp src/* :/
 }
 
