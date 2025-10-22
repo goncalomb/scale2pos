@@ -2,7 +2,7 @@
 
 # MicroPython environment control utility.
 # Author: Gonçalo MB <me@goncalomb.com>
-# Version: 0.2
+# Version: 0.3
 
 set -euo pipefail
 shopt -s extglob
@@ -50,10 +50,23 @@ mpy_repl() {
     mpremote # defaults to repl
 }
 
+mpy_build_vars() {
+    if [ -n "${WRITE_BUILD_VARS:-}" ]; then
+        mkdir -p .mpy/lib
+        {
+            echo "GIT_COMMIT = \"$(git rev-parse HEAD 2>/dev/null)\""
+            echo "GIT_VERSION = \"$(git describe --tags --always --long --dirty 2>/dev/null)\""
+            echo "ARGS = $(jq -n --indent 4 --args '$ARGS.positional' -- "$@")"
+        } >.mpy/lib/mpy_ctrl.py
+    fi
+}
+
 cmd_setup() {
     echo "setting up python venv..."
     [ -d ".venv" ] || python3 -m venv .venv
     . .venv/bin/activate
+
+    mpy_build_vars
 
     mkdir -p .mpy
     cd .mpy
@@ -115,6 +128,7 @@ cmd_clear() {
 
 cmd_push() {
     setup_check
+    mpy_build_vars "$@"
     mpy_hard_reset_trap
     mpy_soft_reset
 
@@ -140,11 +154,13 @@ cmd_repl() {
     mpy_repl
 }
 
-case "${1:-}" in
+CMD="${1:-}"
+[ -z "$CMD" ] || shift
+case "$CMD" in
     setup) cmd_setup ;;
     reset) cmd_reset ;;
     clear) cmd_clear ;;
-    push) cmd_push ;;
+    push) cmd_push "$@" ;;
     repl) cmd_repl ;;
-    *) echo "usage: ${0##*/} {setup,reset,clear,push,repl}"
+    *) echo "usage: ${0##*/} {setup,reset,clear,push,repl} ..."
 esac
