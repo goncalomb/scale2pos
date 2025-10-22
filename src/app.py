@@ -1,6 +1,7 @@
 from microdot import Microdot
 from mpy_ctrl import ARGS, GIT_COMMIT, GIT_VERSION
 
+import config
 from utils.keyboard import keyboard_get
 from utils.led import led_state
 from utils.net import start_ap
@@ -16,7 +17,7 @@ async def start(server=False):
 
     led_state(on=True)
     print('start test ap')
-    start_ap('TEST_AP')
+    start_ap(config.wlan_ssid, key=config.wlan_key)
     led_state()
 
     @app.route('/')
