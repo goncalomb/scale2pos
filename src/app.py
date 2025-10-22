@@ -1,16 +1,18 @@
-async def start():
-    from microdot import Microdot
-    from mpy_ctrl import ARGS, GIT_VERSION, GIT_COMMIT
+from microdot import Microdot
+from mpy_ctrl import ARGS, GIT_COMMIT, GIT_VERSION
 
+from utils.keyboard import keyboard_get
+from utils.led import led_state
+from utils.net import start_ap
+
+
+async def start(server=False):
     app = Microdot()
-
-    from utils.keyboard import keyboard_get
-    from utils.led import led_state
-    from utils.net import start_ap
 
     print('GIT_COMMIT =', GIT_COMMIT)
     print('GIT_VERSION =', GIT_VERSION)
     print('ARGS =', ARGS)
+    print('server =', server)
 
     led_state(on=True)
     print('start test ap')
