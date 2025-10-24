@@ -1,6 +1,8 @@
 import asyncio
 import time
 
+import machine
+
 from utils.led import led_force, led_force_toggle, led_state
 
 _t_load = time.ticks_ms()
@@ -10,13 +12,30 @@ _t_main = 0
 print('load')
 
 
-def run(main, *, led=True):
+def run(main, *, led=True, wdt=True, handle_exceptions=True):
     global _t_boot
     _t_boot = time.ticks_ms()
 
     print('boot')
 
     async def boot():
+        if wdt:
+            async def feed(wdt: machine.WDT):
+                while True:
+                    wdt.feed()
+                    await asyncio.sleep_ms(500)
+            # on rp2040 the max timeout is 8388
+            asyncio.create_task(feed(machine.WDT(timeout=8388)))
+
+        if handle_exceptions:
+            # XXX: kill the loop by re-raising the exception
+            # this a bit overkill and does not cancel any pending tasks
+            # no public function to fetch all tasks? research more?
+            def kill_handler(loop, context):
+                print('kill')
+                raise context['exception']
+            asyncio.get_event_loop().set_exception_handler(kill_handler)
+
         async def print_timings():
             now = time.ticks_ms()
             print(
