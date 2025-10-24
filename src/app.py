@@ -1,17 +1,18 @@
-from microdot import Microdot
-from mpy_ctrl import ARGS, GIT_COMMIT, GIT_VERSION
+import machine
+import mpy_ctrl
 
 import config
 from utils.keyboard import keyboard_get
 from utils.led import led_state
-from utils.net import net_wlan_get, net_wlan_start
+from utils.microdot import Args, MicrodotEx, Request
+from utils.net import net_wlan_start
 
 
 async def start(server=False):
-    print('GIT_COMMIT =', GIT_COMMIT)
-    print('GIT_VERSION =', GIT_VERSION)
-    print('ARGS =', ARGS)
-    print('app: start')
+    print(
+        'app: start', machine.unique_id().hex(),
+        mpy_ctrl.GIT_VERSION, mpy_ctrl.ARGS,
+    )
 
     net_wlan_start(
         config.wlan_ssid,
@@ -20,26 +21,22 @@ async def start(server=False):
         on_connected_change=lambda ok, ips: led_state(flash=0 if ok else -1),
     )
 
-    app = Microdot()
-
-    @app.route('/')
-    async def _(req):
-        return '\n'.join([
-            'hi',
-            f'GIT_COMMIT = {GIT_COMMIT}',
-            f'GIT_VERSION = {GIT_VERSION}',
-            f'ARGS = {ARGS}',
-            f'ifconfig = {net_wlan_get().ifconfig()}',
-            ''
-        ])
+    app = MicrodotEx()
 
     if server:
-        @app.route('/kb')
-        async def _(req):
-            if 'code' not in req.args:
-                return 'bad code', 400
-            await keyboard_get().async_send_codes(req.args['code'])
-            return 'ok'
+        @app.route('/keyboard')
+        @Args.inject(info='send keyboard codes')
+        async def _(req: Request, args: Args):
+            code = args.str('code', max=config.pos_keyboard_code_max)
+            delay = args.int(
+                'delay', config.pos_keyboard_delay,
+                min=0, max=config.pos_keyboard_delay_max,
+            )
+            delay_long = args.int(
+                'delay_long', config.pos_keyboard_delay_long,
+                min=0, max=config.pos_keyboard_delay_long_max,
+            )
+            args.validate()
+            await keyboard_get().async_send_codes(code, delay, delay_long)
 
-    print('app: start web server')
-    await app.start_server(port=80)
+    await app.start_server()
