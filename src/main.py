@@ -1,9 +1,9 @@
-from mpy_ctrl import ARGS
+from mpy_ctrl import args
 
 from utils.bootstrap import panic, run
 from utils.keyboard import keyboard_setup
 
-variant = ARGS[0] if ARGS and ARGS[0] in ['client', 'server'] else None
+variant = args[0] if args and args[0] in ['client', 'server'] else None
 if not variant:
     panic('invalid variant')
 

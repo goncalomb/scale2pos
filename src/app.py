@@ -11,7 +11,7 @@ from utils.net import net_wlan_start
 async def start(server=False):
     print(
         'app: start', machine.unique_id().hex(),
-        mpy_ctrl.GIT_VERSION, mpy_ctrl.ARGS,
+        mpy_ctrl.git_version, mpy_ctrl.args,
     )
 
     net_wlan_start(

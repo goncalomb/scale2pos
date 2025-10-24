@@ -2,7 +2,7 @@
 
 # MicroPython environment control utility.
 # Author: Gonçalo MB <me@goncalomb.com>
-# Version: 0.3
+# Version: 0.4
 
 set -euo pipefail
 shopt -s extglob
@@ -54,9 +54,9 @@ mpy_build_vars() {
     if [ -n "${WRITE_BUILD_VARS:-}" ]; then
         mkdir -p .mpy/lib
         {
-            echo "GIT_COMMIT = \"$(git rev-parse HEAD 2>/dev/null)\""
-            echo "GIT_VERSION = \"$(git describe --tags --always --long --dirty 2>/dev/null)\""
-            echo "ARGS = $(jq -n --indent 4 --args '$ARGS.positional' -- "$@")"
+            echo "git_commit = \"$(git rev-parse HEAD 2>/dev/null)\""
+            echo "git_version = \"$(git describe --tags --always --long --dirty 2>/dev/null)\""
+            echo "args = $(jq -n --indent 4 --args '$ARGS.positional' -- "$@")"
         } >.mpy/lib/mpy_ctrl.py
     fi
 }
