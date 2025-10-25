@@ -2,7 +2,7 @@
 
 # MicroPython environment control utility.
 # Author: Gonçalo MB <me@goncalomb.com>
-# Version: 0.4
+# Version: 0.5
 
 set -euo pipefail
 shopt -s extglob
@@ -61,6 +61,30 @@ mpy_build_vars() {
     fi
 }
 
+mpy_cross_dir() {
+    # note: boot.py and main.py cannot be compiled
+    # compile .py to .mpy
+    {
+        cd -- "$1"
+        find "." -type f -name "*.py" -and -not -path "./main.py" -and -not -path "./boot.py"
+    } | while IFS= read -r F; do
+        IN="$1/${F:2}"
+        OUT="$2/${F:2:-3}.mpy"
+        mkdir -p -- "$(dirname -- "$OUT")"
+        mpy-cross -o "$OUT" "${COMPILE_MPY_ARGS[@]}" -- "$IN"
+    done
+    # copy non .py files
+    {
+        cd -- "$1"
+        find "." -type f -not -name "*.py" -or -path "./main.py" -or -path "./boot.py"
+    } | while IFS= read -r F; do
+        IN="$1/${F:2}"
+        OUT="$2/${F:2}"
+        mkdir -p -- "$(dirname -- "$OUT")"
+        cp -a "$IN" "$OUT"
+    done
+}
+
 cmd_setup() {
     echo "setting up python venv..."
     [ -d ".venv" ] || python3 -m venv .venv
@@ -71,8 +95,10 @@ cmd_setup() {
     mkdir -p .mpy
     cd .mpy
 
-    # install mpremote
-    pip3 install "mpremote==$MICROPYTHON_VERSION"
+    # install mpremote and mpy-cross
+    pip3 install \
+        "mpremote==$MICROPYTHON_VERSION.*" \
+        "mpy-cross==$MICROPYTHON_VERSION.*" \
 
     # download stubs
     pip3 install -U --target=stubs "micropython-$STUBS-stubs"
@@ -137,6 +163,20 @@ cmd_push() {
     elif [ "${#MIP_PACKAGES[@]}" -ne 0 ]; then
         echo "installing mip packages..."
         mpremote mip --index "$MIP_INDEX" install ${MIP_PACKAGES[@]}
+    fi
+
+    if [ -n "${COMPILE_MPY:-}" ]; then
+        echo "compiling files..."
+        # compile extra libs (.mpy/lib)
+        if [ -d ".mpy/lib" ]; then
+            mpy_cross_dir .mpy/lib .mpy/build/lib
+        fi
+        # compile src
+        mpy_cross_dir src .mpy/build
+        # copy built file
+        echo "copying files..."
+        mpremote fs --recursive cp .mpy/build/* :/
+        return
     fi
 
     echo "copying files..."
