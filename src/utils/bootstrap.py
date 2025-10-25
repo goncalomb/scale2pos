@@ -12,7 +12,7 @@ _t_main = 0
 print('load')
 
 
-def run(main, *, led=True, wdt=True, handle_exceptions=True):
+def run(main, *, led=True, wdt=True, handle_exceptions=True, reset=True):
     global _t_boot
     _t_boot = time.ticks_ms()
 
@@ -55,6 +55,8 @@ def run(main, *, led=True, wdt=True, handle_exceptions=True):
         if led:
             led_force()
         asyncio.run(boot())
+        if reset:
+            machine.soft_reset()
     finally:
         if led:
             led_force(False)
