@@ -40,3 +40,24 @@ The scale has an RS-232 port that is normally connected directly to the POS, but
 # install the "server" code (POS)
 ./mpy-ctrl.sh push server
 ```
+
+## References
+
+- [tw-vw-protocols-v5.pdf](references/tw-vw-protocols-v5.pdf)
+  - Source: <https://www.scribd.com/document/753953879/TW-VW-PROTOCOLS-v5>
+  - Accessed: 2025-10-18
+- [General-Specifications-2025.pdf](references/General-Specifications-2025.pdf)
+  - URL: <https://gs1pt.org/wp-content/uploads/2025/02/General-Specifications-2025.pdf>
+  - Source: <https://gs1pt.org/guias-de-utilizacao/>
+  - Accessed: 2025-10-27
+- [Manual-Utilizador-GS1_2019.pdf](references/Manual-Utilizador-GS1_2019.pdf)
+  - URL: <https://gs1pt.org/wp-content/uploads/2024/04/Manual-Utilizador-GS1_2019.pdf>
+  - Source: <https://gs1pt.org/guias-de-utilizacao/>
+  - Accessed: 2025-10-27
+- [Standard-GS1-PT-Codificacao-Produtos-Peso-Variavel.pdf](references/Standard-GS1-PT-Codificacao-Produtos-Peso-Variavel.pdf)
+  - URL: <https://gs1pt.org/wp-content/uploads/2022/11/Standard-GS1-PT-Codificacao-Produtos-Peso-Variavel.pdf>
+  - Source: <https://gs1pt.org/guias-de-utilizacao/>
+  - Accessed: 2025-10-27
+- [SummaryOfGS1MOPrefixes20-29.pdf](references/SummaryOfGS1MOPrefixes20-29.pdf)
+  - URL: <https://www.gs1.org/docs/barcodes/SummaryOfGS1MOPrefixes20-29.pdf>
+  - Accessed: 2025-10-27
