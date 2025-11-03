@@ -43,9 +43,46 @@ The scale has an RS-232 port that is normally connected directly to the POS, but
 
 ## References
 
+### Baxtran (scales)
+
+#### XTA
+
+- [xta-v2-en.pdf](references/xta-v2-en.pdf)
+  - URL: <https://www.baxtran.com/uploads/files/producto/comerciales/xta/xta-v2-en.pdf>
+  - Source: <https://www.baxtran.com/en/retail-scales/xta.html>
+  - Accessed: 2025-11-02
+- [xta-xta-p-user-manual-en-fr-es-de-pt-it-v26.pdf](references/xta-xta-p-user-manual-en-fr-es-de-pt-it-v26.pdf)
+  - URL: <https://www.baxtran.com/uploads/files/producto/balanza-comercial-xta-de-baxtran/xta-xta-p-user-manual-en-fr-es-de-pt-it-v26.pdf>
+  - Source: <https://www.baxtran.com/en/retail-scales/xta.html>
+  - Accessed: 2025-11-02
+
+#### XTI
+
+- [en-2018-157-xti-np.pdf](references/en-2018-157-xti-np.pdf)
+  - URL: <https://www.baxtran.com/uploads/files/producto/comerciales/en-2018-157-xti-np.pdf>
+  - Source: <https://www.baxtran.com/en/retail-scales/xti.html>
+  - Accessed: 2025-11-02
+- [xti-musuario-v16-es-fr-en-de-pt-it.pdf](references/xti-musuario-v16-es-fr-en-de-pt-it.pdf)
+  - URL: <https://www.baxtran.com/uploads/files/producto/balanza-comercial-xti/xti-musuario-v16-es-fr-en-de-pt-it.pdf>
+  - Source: <https://www.baxtran.com/en/retail-scales/xti.html>
+  - Accessed: 2025-11-02
+
+#### TW/VW
+
+- [en-2018-156-tw-vw-np.pdf](references/en-2018-156-tw-vw-np.pdf)
+  - URL: <https://www.baxtran.com/uploads/files/producto/comerciales/en-2018-156-tw-vw-np.pdf>
+  - Source: <https://www.baxtran.com/en/retail-scales/twvw.html>
+  - Accessed: 2025-11-02
+- [tw-vw-es-pt-fr-en-deumanual-v49.pdf](references/tw-vw-es-pt-fr-en-deumanual-v49.pdf)
+  - URL: <https://www.baxtran.com/uploads/files/producto/balanza-comercial-tw/vw-de-baxtran/tw-vw-es-pt-fr-en-deumanual-v49.pdf>
+  - Source: <https://www.baxtran.com/en/retail-scales/twvw.html>
+  - Accessed: 2025-11-02
 - [tw-vw-protocols-v5.pdf](references/tw-vw-protocols-v5.pdf)
   - Source: <https://www.scribd.com/document/753953879/TW-VW-PROTOCOLS-v5>
   - Accessed: 2025-10-18
+
+### GS1 (barcodes)
+
 - [General-Specifications-2025.pdf](references/General-Specifications-2025.pdf)
   - URL: <https://gs1pt.org/wp-content/uploads/2025/02/General-Specifications-2025.pdf>
   - Source: <https://gs1pt.org/guias-de-utilizacao/>
