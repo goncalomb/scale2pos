@@ -3,7 +3,9 @@ from mpy_ctrl import args
 from utils.bootstrap import panic, run
 from utils.keyboard import keyboard_setup
 
-variant = args[0] if args and args[0] in ['client', 'server'] else None
+variant = args[0] if args and args[0] in [
+    'client', 'server', 'serial-debug',
+] else None
 if not variant:
     panic('invalid variant')
 
@@ -14,7 +16,11 @@ if variant == 'server':
 
 async def main():
     # defer app import
-    from app import start
-    await start(variant == 'server')
+    if variant == 'serial-debug':
+        from utils.serial import serial_debug_start
+        await serial_debug_start()
+    else:
+        from app import start
+        await start(variant == 'server')
 
 run(main())
