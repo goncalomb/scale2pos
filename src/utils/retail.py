@@ -4,6 +4,27 @@ import typing
 import machine
 
 
+def _only_digits(val: str):
+    return all(c in '0123456789' for c in val)
+
+
+def gs1_control_digit(code: str):
+    if not _only_digits(code):
+        raise ValueError('Invalid code')
+    return str((10 - sum(
+        int(c) * (1 if i % 2 else 3) for i, c in enumerate(reversed(code))
+    ) % 10) % 10)
+
+
+def gs1_retail_weight_code_gen(product: str, weight: str):
+    if len(product) != 5 or not _only_digits(product):
+        raise ValueError('Invalid product code')
+    if len(weight) != 5 or not _only_digits(weight):
+        raise ValueError('Invalid weight code')
+    code = f'28{product}{weight}'
+    return code + gs1_control_digit(code)
+
+
 class ScaleSerial():
     def __init__(
         self,
@@ -55,7 +76,9 @@ class ScaleSerialToledo(ScaleSerial):
                     self.n = bool(data[2] & 0b0100)
                     self.z = bool(data[2] & 0b1000)
                 elif l == 7:
-                    self.w = data[1:6].decode('ascii')  # TODO: check digits
+                    w = data[1:6].decode('ascii')
+                    if _only_digits(w):
+                        self.w = w
 
         def valid(self):
             return bool(self.w or self.u or self.o or self.n or self.z)

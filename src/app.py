@@ -6,13 +6,12 @@ import mpy_ctrl
 import requests
 
 import config
-from barcode import gs1_retail_weight_code_gen
 from utils.gpio import PinEx, gpio_start_poll_btns
 from utils.keyboard import keyboard_get
 from utils.led import led_force, led_state
 from utils.microdot import Args, MicrodotEx, Request
 from utils.net import net_wlan_start
-from utils.retail import ScaleSerialToledo
+from utils.retail import ScaleSerialToledo, gs1_retail_weight_code_gen
 
 
 def _request_get_json(url: str, *, led=True):
