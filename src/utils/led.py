@@ -7,10 +7,10 @@ _led = None
 _led_task = None
 
 
-def _led_get():
+def led_setup(id: int | str = 'LED'):
     global _led
     if not _led:
-        _led = Pin('LED', Pin.OUT)
+        _led = Pin(id, Pin.OUT)
     return _led
 
 
@@ -33,12 +33,12 @@ def led_state(*, on=False, flash=0):
     global _led_task
     if _led_task:
         _led_task.cancel()
-    _led_task = asyncio.create_task(_led_create_task(_led_get(), on, flash))
+    _led_task = asyncio.create_task(_led_create_task(led_setup(), on, flash))
 
 
 def led_force(on=True):
-    _led_get().value(1 if on else 0)
+    led_setup().value(1 if on else 0)
 
 
 def led_force_toggle():
-    _led_get().toggle()
+    led_setup().toggle()

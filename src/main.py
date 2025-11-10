@@ -13,6 +13,11 @@ if variant == 'server':
     # do keyboard setup as early as possible
     keyboard_setup()
 
+if variant == 'client':
+    from utils.led import led_setup
+    from config import scale_gpio_led
+    led_setup(scale_gpio_led)
+
 
 async def main():
     # defer app import

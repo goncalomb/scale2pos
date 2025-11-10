@@ -11,6 +11,7 @@ pos_keyboard_delay_max = 500
 pos_keyboard_delay_long = 1500
 pos_keyboard_delay_long_max = 5000
 
+scale_gpio_led = 8
 scale_serial_phys = (0, 0, 1)  # id, tx, rx,
 scale_serial_proto = (9600, 8, None, 1)  # speed, bits, parity, stop
 scale_serial_extra_tx = 4  # extra unused tx pin to pull up (dual transceiver)
