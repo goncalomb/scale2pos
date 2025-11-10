@@ -1,3 +1,4 @@
+import asyncio
 import gc
 
 import machine
@@ -11,6 +12,7 @@ from utils.keyboard import keyboard_get
 from utils.led import led_force, led_state
 from utils.microdot import Args, MicrodotEx, Request
 from utils.net import net_wlan_start
+from utils.retail import ScaleSerialToledo
 
 
 def _request_get_json(url: str, *, led=True):
@@ -82,7 +84,47 @@ async def start(server=False):
             await keyboard_get().async_send_codes(code, delay, delay_long)
 
     else:  # client (scale)
+        # setup scale serial
+        scale = ScaleSerialToledo(
+            config.scale_serial_phys,
+            config.scale_serial_proto,
+        )
+        # setup unused serial (dual transceiver)
+        machine.Pin(
+            config.scale_serial_extra_tx,
+            mode=machine.Pin.IN, pull=machine.Pin.PULL_UP,
+        )
+
         pcodes = config.scale_gpio_product_codes
+        lock = asyncio.Lock()
+
+        async def send_product_weight(pcode: str):
+            if lock.locked():
+                print('button:', pcode, 'locked')
+                return
+            async with lock:
+                if not wlan_gateway:
+                    print('button:', pcode, 'no wlan')
+                    buzzer_pin.async_flash(count=3)
+                    return
+
+                weight = await scale.get_weight()
+                print('button:', pcode, 'weight', weight)
+                if not weight.w:  # bad weight
+                    buzzer_pin.async_flash(count=3)
+                    return
+
+                try:
+                    bcode = gs1_retail_weight_code_gen(pcode, weight.w)
+                except ValueError:
+                    print('button:', pcode, weight.w, 'bad code')
+                    buzzer_pin.async_flash(count=3)
+                    return
+
+                print('button:', pcode, weight.w, 'sending', bcode)
+                buzzer_pin.flash(count=1)  # the request is sync
+                ok = _send_keyboard_code(wlan_gateway, bcode)
+                buzzer_pin.async_flash(count=2 if ok else 3)
 
         def btn_long(id):
             if id == config.scale_gpio_reset:
@@ -90,26 +132,7 @@ async def start(server=False):
                 app.shutdown()
 
         def btn_short(id):
-            pcode = pcodes[id]
-            if not wlan_gateway:
-                print('button:', pcode, 'no wlan')
-                buzzer_pin.async_flash(count=3)
-                return
-
-            # TODO: connect to actual weighing scale
-            weight = '12345'
-
-            try:
-                bcode = gs1_retail_weight_code_gen(pcode, weight)
-            except ValueError:
-                print('button:', pcode, weight, 'bad code')
-                buzzer_pin.async_flash(count=3)
-                return
-
-            print('button:', pcode, weight, 'sending', bcode)
-            buzzer_pin.flash(count=1)  # the request is sync
-            ok = _send_keyboard_code(wlan_gateway, bcode)
-            buzzer_pin.async_flash(count=2 if ok else 3)
+            asyncio.create_task(send_product_weight(pcodes[id]))
 
         gpio_start_poll_btns(
             pcodes.keys(),
