@@ -1,15 +1,15 @@
 # Scale 2 POS (scale2pos)
 
+The goal of this project is to connect a retail scale to a POS (point-of-sale) system using 2 Raspberry Pi Pico W.
+
+The scale has an RS-232 port that is normally connected directly to the POS, but in this case it is connected to an RPi that reads the weight from the scale and transmits it to the other RPi (over Wi-Fi), the second RPi inputs the weight (and product code) on the POS. This removes the need for the scale and POS to be physically connected.
+
 > This is a very specific project to solve a very specific problem. I don't expect it to be useful to anyone as is, but it has some code that can be used on other projects:
 >
 > - [mpy-ctrl.sh](mpy-ctrl.sh): A bash script to setup and manage any MicroPython project (with a `mpy-ctrl.conf` configuration file). Setups a MicroPython environment with `mpremote` and `mpy-cross`, downloads stubs, downloads dependencies (including mip packages), compiles the code to `.mpy` and pushes the code to the device. I created this because I felt that the tooling around MicroPython was too disconnected and there was no standard way to configure a MicroPython project.
 > - [src/utils](src/utils): Generic utilities that can be used on other projects.
 >
 > This was my first project in MicroPython and served as my introduction to the platform. -goncalomb
-
-The goal of this project is to connect a retail scale to a POS (point of sale) system using 2 Raspberry Pi Pico W.
-
-The scale has an RS-232 port that is normally connected directly to the POS, but in this case it is connected an RPi that reads the weight from the scale and transmits it to the other RPi (over Wi-Fi), the second RPi inputs the weight (and product code) on the POS. This removes the need for the scale and POS to be physically connected.
 
 ## Requirements / Setup
 
@@ -28,20 +28,38 @@ The scale has an RS-232 port that is normally connected directly to the POS, but
 - Acts as a Wi-Fi access point and web server (HTTP);
 - Receives and emulates keyboard codes, the POS interprets these inputs as barcodes and registers the product;
 
-## MicroPython Code (for Raspberry Pi Pico W)
+## Hardware
+
+This is a non-exhaustive list, there is no custom PCB or schematic.
+
+- 2x [Raspberry Pi Pico W](https://www.raspberrypi.com/documentation/microcontrollers/pico-series.html);
+- 1x [Waveshare Pico-2CH-RS232](https://www.waveshare.com/wiki/Pico-2CH-RS232);
+- ...
+
+## Software (MicroPython)
+
+The code is managed and installed using the custom `mpy-ctrl.sh` script.
 
 ```bash
 # setup environment and download dependencies
 ./mpy-ctrl.sh setup
 
-# install the "client" code (scale)
+# install the "client" variant (scale)
 ./mpy-ctrl.sh push client
 
-# install the "server" code (POS)
+# install the "server" variant (POS)
 ./mpy-ctrl.sh push server
+
+# install the "serial-debug" variant (interactive serial debug console)
+./mpy-ctrl.sh push serial-debug
 ```
 
 ## References
+
+Archive of several retail scale documents and barcode specifications. Most important files:
+
+- [tw-vw-protocols-v5.pdf](references/tw-vw-protocols-v5.pdf): retail scale serial protocols (Baxtran);
+- [Standard-GS1-PT-Codificacao-Produtos-Peso-Variavel.pdf](references/Standard-GS1-PT-Codificacao-Produtos-Peso-Variavel.pdf): variable weight barcode format (in Portuguese);
 
 ### Baxtran (scales)
 
