@@ -54,6 +54,20 @@ The code is managed and installed using the custom `mpy-ctrl.sh` script.
 ./mpy-ctrl.sh push serial-debug
 ```
 
+## 3D Models (for 3D printing)
+
+![scale2pos](models/scale2pos.png)
+
+Project box models for 3D printing ([models/](models/)). The "Pico" box (in the middle) is for the "server". The big box is for the "client".
+
+> You may use these models for your own projects!
+>
+> The "Pico" box is just a plain box that fits the Raspberry Pi Pico perfectly, no screws, the RPi and the lid slide from the back, ideal when you don't need any IO, just a USB connection. The big box can also be used as a generic project box.
+>
+> The parametric FreeCAD project is also available ([models/scale2pos.FCStd](models/scale2pos.FCStd)). License: [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/).
+>
+> I'm still learning FreeCAD, these are my first published models. &mdash;goncalomb
+
 ## References
 
 Archive of several retail scale documents and barcode specifications. Most important files:
