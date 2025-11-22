@@ -40,11 +40,9 @@ class PinEx(machine.Pin):
             self.toggle()
             time.sleep_ms(delay_off)
 
-    def async_flash(self, *, count=1, value=1, delay_on=50, delay_off=50):
-        async def task():
-            for i in range(count):
-                self.value(value)
-                await asyncio.sleep_ms(delay_on)
-                self.toggle()
-                await asyncio.sleep_ms(delay_off)
-        return asyncio.create_task(task())
+    async def async_flash(self, *, count=1, value=1, delay_on=50, delay_off=50):
+        for i in range(count):
+            self.value(value)
+            await asyncio.sleep_ms(delay_on)
+            self.toggle()
+            await asyncio.sleep_ms(delay_off)

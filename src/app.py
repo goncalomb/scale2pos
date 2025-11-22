@@ -104,26 +104,26 @@ async def start(server=False):
             async with lock:
                 if not wlan_gateway:
                     print('button:', pcode, 'no wlan')
-                    buzzer_pin.async_flash(count=3)
+                    await buzzer_pin.async_flash(count=3)
                     return
 
                 weight = await scale.get_weight()
                 print('button:', pcode, 'weight', weight)
                 if not weight.w:  # bad weight
-                    buzzer_pin.async_flash(count=3)
+                    await buzzer_pin.async_flash(count=3)
                     return
 
                 try:
                     bcode = gs1_retail_weight_code_gen(pcode, weight.w)
                 except ValueError:
                     print('button:', pcode, weight.w, 'bad code')
-                    buzzer_pin.async_flash(count=3)
+                    await buzzer_pin.async_flash(count=3)
                     return
 
                 print('button:', pcode, weight.w, 'sending', bcode)
                 buzzer_pin.flash(count=1)  # the request is sync
                 ok = _send_keyboard_code(wlan_gateway, bcode)
-                buzzer_pin.async_flash(count=2 if ok else 3)
+                await buzzer_pin.async_flash(count=2 if ok else 3)
 
         def btn_long(id):
             if id == config.scale_gpio_reset:
