@@ -51,10 +51,15 @@ async def start(server=False):
 
     wlan_gateway = ''
 
+    def wlan_check():
+        nonlocal wlan_gateway
+        led_state(flash=0 if wlan_gateway else config.led_error_state_flash)
+        return bool(wlan_gateway)
+
     def on_connected_change(ok, ips):
         nonlocal wlan_gateway
         wlan_gateway = ips[2] if ok else ''
-        led_state(flash=0 if ok else -1)
+        led_state(flash=0 if ok else config.led_error_state_flash)
 
     net_wlan_start(
         config.wlan_ssid,
@@ -102,7 +107,7 @@ async def start(server=False):
                 print('button:', pcode, 'locked')
                 return
             async with lock:
-                if not wlan_gateway:
+                if wlan_check():
                     print('button:', pcode, 'no wlan')
                     await buzzer_pin.async_flash(count=3)
                     return

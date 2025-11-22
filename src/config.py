@@ -4,6 +4,7 @@ wlan_ssid = 'SCALE2POS_' + config_gen.wlan_ssid_suffix
 wlan_key = config_gen.wlan_key
 
 gpio_buzzer = 9
+led_error_state_flash = 150  # (X * 400ms) = 60000ms = 60s
 
 pos_keyboard_code_max = 20
 pos_keyboard_delay = 20
