@@ -135,3 +135,13 @@ Archive of several retail scale documents and barcode specifications. Most impor
 - [SummaryOfGS1MOPrefixes20-29.pdf](references/SummaryOfGS1MOPrefixes20-29.pdf)
   - URL: <https://www.gs1.org/docs/barcodes/SummaryOfGS1MOPrefixes20-29.pdf>
   - Accessed: 2025-10-27
+
+## License
+
+### 3D Models
+
+Creative Commons license: [CC Attribution-ShareAlike 4.0](https://creativecommons.org/licenses/by-sa/4.0/).
+
+### Software
+
+scale2pos is released under the terms of the MIT License. See [LICENSE.txt](LICENSE.txt) for details.
