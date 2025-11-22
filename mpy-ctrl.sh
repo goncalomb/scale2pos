@@ -2,7 +2,23 @@
 
 # MicroPython environment control utility.
 # Author: Gonçalo MB <me@goncalomb.com>
-# Version: 0.5
+# Version: 0.6
+#
+# I created this because I felt that the tooling around MicroPython
+# was too disconnected and there was no standard way to configure a
+# MicroPython project.
+#
+# See 'mpy-ctrl.conf' for example configuration.
+#
+# Features:
+#
+# - Setups a MicroPython environment with 'mpremote' and 'mpy-cross';
+# - Downloads stubs;
+# - Downloads dependencies (including mip packages);
+# - Compiles the code to '.mpy';
+# - Pushes the code to the device;
+#
+# Commands: setup, reset, clear, push, repl
 
 set -euo pipefail
 shopt -s extglob
