@@ -1,14 +1,14 @@
 # Scale 2 POS (scale2pos)
 
-The goal of this project is to connect a retail scale to a POS (point-of-sale) system using 2 Raspberry Pi Pico W.
+The goal of this project is to connect a [retail scale](https://duckduckgo.com/?q=retail+scale) to a [POS (point-of-sale) system](https://duckduckgo.com/?q=pos+system) using 2 Raspberry Pi Pico W.
 
 The scale has an RS-232 port that is normally connected directly to the POS, but in this case it is connected to an RPi that reads the weight from the scale and transmits it to the other RPi (over Wi-Fi), the second RPi inputs the weight (and product code) on the POS. This removes the need for the scale and POS to be physically connected.
 
 > This is a very specific project to solve a very specific problem. I don't expect it to be useful to anyone as is, but it has some components that can be used on other projects:
 >
-> - [mpy-ctrl.sh](mpy-ctrl.sh): A bash script to setup and manage any MicroPython project;
-> - [src/utils](src/utils): Generic MicroPython utilities ([net.py](src/utils/net.py) is a nice one);
-> - [3D Models](#3d-models-for-3d-printing): Project box models for 3D printing;
+> - [mpy-ctrl.sh](mpy-ctrl.sh): a bash script to setup and manage any MicroPython project;
+> - [src/utils](src/utils): generic MicroPython utilities ([net.py](src/utils/net.py) is a nice one);
+> - [3D Models](#3d-models-for-3d-printing): project box models for 3D printing;
 >
 > This was my first project in MicroPython and served as my introduction to the platform. &mdash;goncalomb
 
@@ -49,9 +49,11 @@ This is a non-exhaustive list, there is no custom PCB or schematic:
 - Yellow LED, resistor (1k);
 - Generic push buttons, wires, etc.;
 
+> You may have noticed in the images that I've connected the 3V buzzer to 5V! Oops, that was not intentional. 5V is the operating voltage limit (according to the datasheet). I should have used a 5V buzzer, but I didn't want to redo the wiring. If it fails (I don't think it will), I'll fix it. &mdash;goncalomb
+
 ## Software (MicroPython)
 
-The code is managed and installed using the custom `mpy-ctrl.sh` script. The variant is selected when pushing the code:
+The code is shared between the "client" and "server", it is managed and installed using the custom `mpy-ctrl.sh` script. The variant is selected when pushing the code:
 
 ```bash
 # setup environment and download dependencies
@@ -71,7 +73,7 @@ The code is managed and installed using the custom `mpy-ctrl.sh` script. The var
 
 ![scale2pos](models/scale2pos.png)
 
-Project box models for 3D printing ([models/](models/)). The "Pico Box" (in the middle) is for the "server". The big box is for the "client".
+Project box models for 3D printing ([models/](models/)). The "Pico Box" (in the middle) is for the "server" that connects with the POS. The big box is for the "client" that connects with the scale.
 
 > You may use these models for your own projects!
 >
