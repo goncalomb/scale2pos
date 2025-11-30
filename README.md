@@ -12,6 +12,14 @@ The scale has an RS-232 port that is normally connected directly to the POS, but
 >
 > This was my first project in MicroPython and served as my introduction to the platform. &mdash;goncalomb
 
+## Images
+
+Final device images ([images/](images/)):
+
+![banner-0](images/banner-0.jpg)
+
+![banner-1](images/banner-1.jpg)
+
 ## Requirements / Setup
 
 "Client" RPi (scale):
