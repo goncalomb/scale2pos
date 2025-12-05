@@ -107,7 +107,7 @@ async def start(server=False):
                 print('button:', pcode, 'locked')
                 return
             async with lock:
-                if wlan_check():
+                if not wlan_check():
                     print('button:', pcode, 'no wlan')
                     await buzzer_pin.async_flash(count=3)
                     return
