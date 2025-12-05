@@ -7,7 +7,7 @@ The scale has an RS-232 port that is normally connected directly to the POS, but
 > This is a very specific project to solve a very specific problem. I don't expect it to be useful to anyone as is, but it has some components that can be used on other projects:
 >
 > - [mpy-ctrl.sh](mpy-ctrl.sh): a bash script to setup and manage any MicroPython project;
-> - [src/utils](src/utils/): generic MicroPython utilities ([net.py](src/utils/net.py) is a nice one);
+> - [src/utils/](src/utils/): generic MicroPython utilities ([net.py](src/utils/net.py) is a nice one);
 > - [3D Models](#3d-models-for-3d-printing): project box models for 3D printing;
 >
 > This was my first project in MicroPython and served as my introduction to the platform. &mdash;goncalomb
