@@ -7,7 +7,7 @@ The scale has an RS-232 port that is normally connected directly to the POS, but
 > This is a very specific project to solve a very specific problem. I don't expect it to be useful to anyone as is, but it has some components that can be used on other projects:
 >
 > - [mpy-ctrl.sh](mpy-ctrl.sh): a bash script to setup and manage any MicroPython project;
-> - [src/utils](src/utils): generic MicroPython utilities ([net.py](src/utils/net.py) is a nice one);
+> - [src/utils](src/utils/): generic MicroPython utilities ([net.py](src/utils/net.py) is a nice one);
 > - [3D Models](#3d-models-for-3d-printing): project box models for 3D printing;
 >
 > This was my first project in MicroPython and served as my introduction to the platform. &mdash;goncalomb
@@ -49,7 +49,7 @@ This is a non-exhaustive list, there is no custom PCB or schematic:
 - Yellow LED, resistor (1k);
 - Generic push buttons, wires, etc.;
 
-> You may have noticed in the images that I've connected the 3V buzzer to 5V! Oops, that was not intentional. 5V is the operating voltage limit (according to the datasheet). I should have used a 5V buzzer, but I didn't want to redo the wiring. If it fails (I don't think it will), I'll fix it. &mdash;goncalomb
+> You may have noticed in the images that I've connected the 3V buzzer to 5V! Oops, that was not intentional. According to the datasheet, 5V is the operating voltage limit for this buzzer. If it fails (I don't think it will), I'll change it to a 5V buzzer. &mdash;goncalomb
 
 ## Software (MicroPython)
 
@@ -77,7 +77,7 @@ Project box models for 3D printing ([models/](models/)). The "Pico Box" (in the 
 
 > You may use these models for your own projects!
 >
-> The "Pico Box" is just a plain box that fits the Raspberry Pi Pico perfectly, no screws, the RPi and the lid slide from the back, ideal when you don't need any IO, just a USB connection. The big box can also be used as a generic project box.
+> The "Pico Box" (also [published on printables](https://www.printables.com/model/1504252-pico-box)) is just a plain box that fits the Raspberry Pi Pico perfectly with no screws. The big box can used as a generic project box.
 >
 > The parametric FreeCAD project is also available ([models/scale2pos.FCStd](models/scale2pos.FCStd)). License: [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/).
 >
