@@ -46,6 +46,7 @@ class KeyboardInterfaceEx(KeyboardInterface):
                 await asyncio.sleep_ms(delay_long)
             elif c in self.CHAR_CODES:
                 self.send_keys([self.CHAR_CODES[c]])
+                await asyncio.sleep_ms(5)
                 self.send_keys([])
                 await asyncio.sleep_ms(delay)
 

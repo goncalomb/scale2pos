@@ -141,6 +141,7 @@ async def start(server=False):
 
         gpio_start_poll_btns(
             pcodes.keys(),
+            interval=100,
             callback_short=btn_short, callback_long=btn_long,
         )
 
