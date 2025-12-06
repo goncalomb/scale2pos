@@ -9,13 +9,14 @@ led_error_state_flash = 150  # (X * 400ms) = 60000ms = 60s
 pos_keyboard_code_max = 20
 pos_keyboard_delay = 20
 pos_keyboard_delay_max = 500
-pos_keyboard_delay_long = 1500
-pos_keyboard_delay_long_max = 5000
+pos_keyboard_delay_long = 750
+pos_keyboard_delay_long_max = 1500
 
 scale_gpio_led = 8
 scale_serial_phys = (0, 0, 1)  # id, tx, rx,
 scale_serial_proto = (9600, 8, None, 1)  # speed, bits, parity, stop
 scale_serial_extra_tx = 4  # extra unused tx pin to pull up (dual transceiver)
+scale_code_prefix = '>>_'  # send ENTER twice to bust the screensaver
 scale_gpio_reset = 10  # must be one of the product buttons (long press)
 scale_gpio_product_codes = {  # product buttons (short press)
     10: '10010',

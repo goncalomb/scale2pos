@@ -125,9 +125,10 @@ async def start(server=False):
                     await buzzer_pin.async_flash(count=3)
                     return
 
-                print('button:', pcode, weight.w, 'sending', bcode)
+                fcode = config.scale_code_prefix + bcode
+                print('button:', pcode, weight.w, 'sending', fcode)
                 buzzer_pin.flash(count=1)  # the request is sync
-                ok = _send_keyboard_code(wlan_gateway, bcode)
+                ok = _send_keyboard_code(wlan_gateway, fcode)
                 await buzzer_pin.async_flash(count=2 if ok else 3)
 
         def btn_long(id):
